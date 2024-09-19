@@ -1,3 +1,4 @@
+import HeroLanding from "@/components/ui/hero-landing";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,9 +9,7 @@ export const metadata: Metadata = {
 
 function LandingPage() {
   return (
-    <main>
-        hello this is landing page(落地页)
-    </main>
+    <HeroLanding></HeroLanding>
   )
 }
 
