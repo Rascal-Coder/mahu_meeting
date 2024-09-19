@@ -11,6 +11,8 @@ export default clerkMiddleware((auth, request) => {
   }
 
   const { userId } = auth();
+  console.log('userId',userId);
+  
   // 如果用户未登录（没有userId） 重定向至落地页
   if (!userId) {
     const landingUrl = new URL("/", request.url);

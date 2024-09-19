@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.5.4",
+    "@clerk/themes": "^2.1.30",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.5",
