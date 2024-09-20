@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   manifest: `${process.env.NEXT_PUBLIC_SEVER_URL}/manifest.json`,
   // Website icon settings
   icons: {
-    icon: "/logo/logo.svg",
-    shortcut: "/logo/logo.svg",
-    apple: "/logo/logo.svg",
+    icon: "/logo/logo.png",
+    shortcut: "/logo/logo.png",
+    apple: "/logo/logo.png",
   }
 };
 
