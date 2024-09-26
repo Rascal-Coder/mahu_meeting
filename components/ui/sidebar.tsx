@@ -10,6 +10,7 @@ import {
   IconPinnedOff,
 } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
+// import { useSidebarLinks } from '../../lib/hooks/useSidebarLinks';
 
 interface Links {
   label: string;
@@ -17,7 +18,7 @@ interface Links {
   icon: React.JSX.Element | React.ReactNode;
 }
 
-interface SidebarContextProps {
+export interface SidebarContextProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   animate: boolean;
@@ -70,21 +71,9 @@ export const SidebarProvider = ({
   );
 };
 
-export const Sidebar = ({
-  children,
-  open,
-  setOpen,
-  setPinned,
-  animate,
-  pinned,
-}: {
-  children: React.ReactNode;
-  open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  setPinned?: React.Dispatch<React.SetStateAction<boolean>>;
-  animate?: boolean;
-  pinned?: boolean;
-}) => {
+export const Sidebar: React.FC<
+  Partial<SidebarContextProps> & React.PropsWithChildren
+> = ({ children, open, setOpen, setPinned, animate, pinned }) => {
   return (
     <SidebarProvider
       open={open}
@@ -117,11 +106,11 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          "min-h-screen px-4 py-4  hidden md:flex md:flex-col bg-dark-2 text-white w-[300px] flex-shrink-0 relative",
+          "h-full px-4 py-4  hidden md:flex md:flex-col bg-dark-2 text-white w-[300px] flex-shrink-0 relative",
           className
         )}
         animate={{
-          width: animate ? (open || pinned ? "300px" : "60px") : "300px",
+          width: animate ? (open || pinned ? "300px" : "68px") : "300px",
         }}
         onMouseEnter={() => !pinned && setOpen(true)}
         onMouseLeave={() => !pinned && setOpen(false)}
@@ -149,7 +138,7 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-[72px] px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-white w-full"
+          "h-[72px] px-4 py-4 flex flex-row md:hidden items-center justify-between absolute top-0 bg-transparent w-full"
         )}
         {...props}
       >
@@ -197,28 +186,56 @@ export const SidebarLink = ({
 }) => {
   const { open, animate } = useSidebar();
   const pathname = usePathname();
+  const isActive = link.href === pathname;
+
   return (
     <Link
       href={link.href}
       className={cn(
-        "flex items-center justify-start gap-2  group/sidebar py-2",
+        "flex items-center gap-2 group/sidebar py-2 rounded-md  justify-start px-2 transition-colors duration-200",
+        isActive 
+          ? "bg-primary-400 text-white" 
+          : "bg-transparent text-gray-300 hover:bg-primary-400/30 hover:text-white",
         className
       )}
       {...props}
     >
-      {link.icon}
+      <span className={cn(
+        "transition-transform duration-200",
+        isActive ? "text-white" : "text-gray-300 group-hover/sidebar:text-white"
+      )}>
+        {link.icon}
+      </span>
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
         className={cn(
-          "text-white text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0",
-          link.href === pathname ? "bg-primary-400" : "bg-transparent"
+          "text-sm whitespace-pre inline-block !p-0 !m-0 transition-all duration-200",
+          isActive ? "font-medium" : "group-hover/sidebar:translate-x-1"
         )}
       >
-        {link.label}
+        {/* 强制大驼峰 */}
+        {link.label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('')}
       </motion.span>
     </Link>
   );
 };
+
+// const Sidebar = () => {
+//   const { SIDEBAR_LINKS } = useSidebarLinks();
+
+//   return (
+//     <div>
+//       {SIDEBAR_LINKS.map((link) => (
+//         <a key={link.href} href={link.href}>
+//           {link.icon}
+//           {link.label}
+//         </a>
+//       ))}
+//     </div>
+//   );
+// };
+
+export default Sidebar;

@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss"
 import colors from 'tailwindcss/colors'
-import svgToDataUri from "mini-svg-data-uri";
 
 // 扁平化颜色调色板的辅助函数
 const flattenColorPalette = (colors: Record<string, any> = {}): Record<string, string> => {
@@ -27,7 +26,7 @@ const config = {
   theme: {
     container: {
       // 容器配置
-      center: true,
+      // center: true,
       padding: {
         // 不同断点的内边距
         DEFAULT: '0rem',
@@ -77,8 +76,6 @@ const config = {
         '70%': { opacity: "0.7" },
         '100%': { opacity: "1" },
       },
-
-
       animation: {
         // 自定义动画
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -110,7 +107,7 @@ const config = {
       },
 
       primary: {
-        '400': '#34befc'
+        '400': '#0e78f9'
       },
 
       secondary: {
@@ -129,19 +126,6 @@ const config = {
   plugins: [
     require("tailwindcss-animate"), 
     addVariablesForColors,
-    // 自定义插件：添加点状背景
-    function ({ matchUtilities, theme }: any) {
-      matchUtilities(
-        {
-          "bg-dot-thick": (value: any) => ({
-            backgroundImage: `url("${svgToDataUri(
-              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="2.5"></circle></svg>`
-            )}")`,
-          }),
-        },
-        { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
-      );
-    },
   ],
 } satisfies Config
 
