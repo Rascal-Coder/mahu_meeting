@@ -136,9 +136,10 @@ export const MobileSidebar = ({
   const { open, setOpen } = useSidebar();
   return (
     <>
+    {/* h-[72px] px-4 py-4 */}
       <div
         className={cn(
-          "h-[72px] px-4 py-4 flex flex-row md:hidden items-center justify-between absolute top-0 bg-transparent w-full"
+          "h-[72px] flex flex-row md:hidden items-center justify-between absolute top-0 bg-transparent right-4"
         )}
         {...props}
       >

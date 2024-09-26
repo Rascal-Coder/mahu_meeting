@@ -7,7 +7,7 @@ export const Logo = () => {
     <div className='cursor-pointer xl:ps-8'>
       <Link href="/" className="flex w-full items-center gap-4">
         <Image src="/logo/logo.svg" alt='logo' width={40} height={40} />
-        <h1 className="font-extrabold text-2xl text-white tracking-tight pt-1">Mahu-meeting</h1>
+        <h1 className="font-extrabold text-md md:text-2xl  text-white tracking-tight pt-1">Mahu-meeting</h1>
       </Link>
     </div>
   )
