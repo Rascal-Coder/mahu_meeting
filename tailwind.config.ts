@@ -12,7 +12,10 @@ const flattenColorPalette = (colors: Record<string, any> = {}): Record<string, s
 	  return [{ [color]: values }];
 	}).reduce((acc, curr) => ({ ...acc, ...curr }), {});
   };
-
+// const {
+//   default: flattenColorPalette,
+// // eslint-disable-next-line @typescript-eslint/no-var-requires
+// } = require("tailwindcss/lib/util/flattenColorPalette");
 const config = {
   darkMode: ["class"],
   content: [
@@ -49,6 +52,14 @@ const config = {
     },
     extend: {
       keyframes: {
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
         // 自定义动画关键帧
         "accordion-down": {
           from: { height: "0" },
@@ -78,6 +89,7 @@ const config = {
       },
       animation: {
         // 自定义动画
+        aurora: "aurora 60s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "loading-transition": "loading 1s ease-in-out",
