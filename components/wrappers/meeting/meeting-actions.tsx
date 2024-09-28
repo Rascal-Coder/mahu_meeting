@@ -7,41 +7,42 @@ import {
   IconCalendarEvent,
   IconVideo,
 } from "@tabler/icons-react";
-export const MeetingActions = () => {
-  return <HoverEffect items={cards} />;
+export const MeetingActions = ({ lng, t }: { lng: string; t: any }) => {
+  const cards = [
+    {
+      id: 0,
+      color: "bg-meeting",
+      icon: <IconPlus />,
+      title: t("createMeeting"), // 国际化
+      description: t("setRecording"), // 国际化
+      option: "isInstantMeeting",
+    },
+    {
+      id: 1,
+      color: "bg-primary-400",
+      icon: <IconUserPlus />,
+      title: t("joinMeeting"), // 国际化
+      description: t("viaInviteLink"), // 国际化
+      option: "isJoiningMeeting",
+    },
+    {
+      id: 2,
+      color: "bg-schedule",
+      icon: <IconCalendarEvent />,
+      title: t("scheduleMeeting"), // 国际化
+      description: t("viaInviteLink"), // 国际化
+      option: "isScheduleMeeting",
+    },
+    {
+      id: 3,
+      color: "bg-recording",
+      icon: <IconVideo />,
+      title: t("viewRecordings"), // 国际化
+      description: t("meetingRecordings"), // 国际化
+      option: undefined,
+    },
+  ];
+  return <HoverEffect items={cards} lng={lng}  t={t} />;
 };
 
-export const cards = [
-  {
-    id: 0,
-    color: "bg-meeting",
-    icon: <IconPlus />,
-    title: "创建会议",
-    description: "设置录音。",
-    option: "isInstantMeeting",
-  },
-  {
-    id: 1,
-    color: "bg-primary-400",
-    icon: <IconUserPlus />,
-    title: "加入会议",
-    description: "通过邀请链接。",
-    option: "isJoiningMeeting",
-  },
-  {
-    id: 2,
-    color: "bg-schedule",
-    icon: <IconCalendarEvent />,
-    title: "计划会议",
-    description: "通过邀请链接。",
-    option: "isScheduleMeeting",
-  },
-  {
-    id: 3,
-    color: "bg-recording",
-    icon: <IconVideo />,
-    title: "查看录音",
-    description: "会议录音。",
-    option: undefined,
-  },
-];
+// export

@@ -18,8 +18,7 @@ import { Textarea } from "./textarea";
 import ReactDatePicker from "react-datepicker";
 import { registerLocale } from "react-datepicker";
 import { zhCN } from "date-fns/locale/zh-CN";
-
-registerLocale("zh-CN", zhCN);
+import { enUS } from "date-fns/locale/en-US";
 
 const initialValues = {
   dateTime: new Date(),
@@ -30,6 +29,8 @@ const initialValues = {
 export const HoverEffect = ({
   items,
   className,
+  lng,
+  t
 }: {
   items: {
     title: string;
@@ -40,7 +41,10 @@ export const HoverEffect = ({
     option: any;
   }[];
   className?: string;
+  lng: string;
+  t: any
 }) => {
+  registerLocale(lng === "zh" ? "zh-CN" : "en-US", lng === "zh" ? zhCN : enUS);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const router = useRouter();
   const [meetingState, setMeetingState] = useState<
@@ -60,21 +64,21 @@ export const HoverEffect = ({
     if (!client || !user) return;
     try {
       if (!values.dateTime) {
-        toast("Sélectionner une date et une heure");
+        toast(t("selectDateTime"));
         return;
       }
 
       if (meetingState === "isScheduleMeeting" && !values.description) {
-        toast("Reinseignez le titre de la réunion");
+        toast(t("reenterMeetingTitle"));
         return;
       }
 
       const id = crypto.randomUUID();
       const call = client.call("default", id);
-      if (!call) throw new Error("erreure dans la création du lien");
+      if (!call) throw new Error(t("linkCreationError"));
       const startsAt =
         values.dateTime.toISOString() || new Date(Date.now()).toISOString();
-      const description = values.description || "Développement frontend";
+      const description = values.description || t("frontendDevelopment");
       await call.getOrCreate({
         data: {
           starts_at: startsAt,
@@ -88,10 +92,10 @@ export const HoverEffect = ({
       if (!values.description) {
         router.push(`/meeting/${call.id}`);
       }
-      toast("Réunion créée");
+      toast(t("meetingCreated"));
     } catch (error) {
       console.error(error);
-      toast("Réunion echouée");
+      toast(t("meetingFailed"));
     }
   };
 
@@ -177,13 +181,13 @@ export const HoverEffect = ({
         }}
         title={titleMeeting}
         className="text-center"
-        buttonText="Démarrer"
+        buttonText={t("start")}
         handleClick={() => router.push(values.link)}
         loading={loading}
         setLoading={setLoading}
       >
         <Input
-          placeholder="Coller le lien ici"
+          placeholder={t("pasteLinkHere")}
           onChange={(e: any) => setValues({ ...values, link: e.target.value })}
           className="border-none text-center text-black text-xl bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
         />
@@ -197,7 +201,7 @@ export const HoverEffect = ({
         }}
         title={titleMeeting}
         className="text-center"
-        buttonText="Démarrer"
+        buttonText={t("start")}
         handleClick={createMeeting}
         loading={loading}
         setLoading={setLoading}
@@ -210,16 +214,16 @@ export const HoverEffect = ({
             setMeetingState(undefined);
             setLoading(false);
           }}
-          title="Planifier une réunion"
+          title={t("scheduleMeeting")}
           handleClick={createMeeting}
           loading={loading}
           setLoading={setLoading}
           className="bg-dark-1"
-          buttonText="Planifier une réunion"
+          buttonText={t("scheduleMeeting")}
         >
           <div className="flex flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-              Description
+              {t("description")}
             </label>
             <Textarea
               autoFocus
@@ -232,11 +236,11 @@ export const HoverEffect = ({
           </div>
           <div className="flex w-full flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-              Choisir la date et l&apos;heure
+              {t("chooseDateTime")}
             </label>
             <ReactDatePicker
               required
-              locale="zh-CN"
+              locale={lng === "zh" ? "zh-CN" : "en-US"}
               selected={values.dateTime}
               onChange={(date: any) =>
                 setValues({ ...values, dateTime: date! })
@@ -244,7 +248,7 @@ export const HoverEffect = ({
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}
-              timeCaption="time"
+              timeCaption={lng === "zh" ? "时间" : "Time"}
               dateFormat="MMMM d, yyyy h:mm aa"
               className="w-full rounded bg-dark-3 p-2 focus:outline-none"
             />
@@ -257,15 +261,15 @@ export const HoverEffect = ({
             setMeetingState(undefined);
             setLoading(false);
           }}
-          title="Réunion créée"
+          title={t("meetingCreated")}
           loading={loading}
           setLoading={setLoading}
           handleClick={() => {
             navigator.clipboard.writeText(meetingLink);
-            toast("Lien copié");
+            toast(t("linkCopied"));
           }}
           className="text-center"
-          buttonText="Copier le lien"
+          buttonText={t("copyLink")}
         />
       )}
     </div>

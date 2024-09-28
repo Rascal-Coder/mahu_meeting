@@ -52,8 +52,7 @@ export default function HomePage({
         today={date}
         currentTime={time}
       />
-      <MeetingActions />
+      <MeetingActions lng={lng}  t={t}/>
     </Grid>
   );
 }
-
