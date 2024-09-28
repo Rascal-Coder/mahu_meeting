@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import acceptLanguage from "accept-language";
+// import acceptLanguage from "accept-language";
+import { match } from "@formatjs/intl-localematcher";
+import Negotiator from "negotiator";
 import { CustomMiddleware } from "@/lib/utils";
 import { fallbackLng, languages, cookieName } from "@/app/i18n/settings";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
@@ -22,9 +24,14 @@ export const withI18n = (middleware: CustomMiddleware) => {
     )
       return await middleware(req, event, NextResponse.next());
     let lng: string | undefined | null;
-    if (req.cookies.has(cookieName))
-      lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
-    if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
+    if (req.cookies.has(cookieName)) lng = req.cookies.get(cookieName)?.value;
+    if (!lng) {
+      const headers = {
+        "accept-language": req.headers.get("accept-language") || "",
+      };
+      const acceptLanguage = new Negotiator({ headers }).languages();
+      lng = match(acceptLanguage, languages, fallbackLng);
+    }
     if (!lng) lng = fallbackLng;
 
     // Redirect if lng in path is not supported

@@ -1,10 +1,13 @@
 {
     "home": "首页",
-    "planned": "计划中",
-    "completed": "已完成",
-    "recorded": "已录制",
+    "planned": "计划",
+    "completed": "完成",
+    "recorded": "记录",
     "meetingRoom": "会议室",
     "standardTime": "标准时间 UTC+1",
     "today": "{{date}}",
-    "currentTime": "{{time}}"
+    "currentTime": "{{time}}",
+    "landingTitle": "Mahu-meeting",
+    "landingDescription": "最受欢迎的即时消息和视频会议平台。",
+    "landingJoinNow": "立即加入"
 }

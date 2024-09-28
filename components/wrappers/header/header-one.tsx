@@ -31,7 +31,7 @@ function HeaderOne({ lng }: { lng: string }) {
     return segments.join("/");
   };
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    // i18n.changeLanguage(lng);
     setLanguage(lng);
     const redirectUrl= redirectedPathName(lng);
     router.push(redirectUrl);

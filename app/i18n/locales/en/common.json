@@ -6,5 +6,8 @@
     "meetingRoom": "Meeting Room",
     "standardTime": "Standard Time UTC+1",
     "today": "{{date}}",
-    "currentTime": "{{time}}"
+    "currentTime": "{{time}}",
+    "landingTitle":"Mahu-meeting",
+    "landingDescription":"the most popular instant messaging and video conferencing platform.",
+    "landingJoinNow":"Join now"
 }

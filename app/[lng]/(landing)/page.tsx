@@ -7,9 +7,15 @@ export const metadata: Metadata = {
   keywords: "multi-person conference, video conferencing, remote collaboration, online meetings",
 };
 
-function LandingPage() {
+function LandingPage({
+  params: { lng },
+}: {
+  params: {
+    lng: string;
+  };
+}) {
   return (
-    <HeroLanding></HeroLanding>
+    <HeroLanding lng={lng}></HeroLanding>
   )
 }
 
