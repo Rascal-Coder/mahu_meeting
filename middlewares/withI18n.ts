@@ -3,45 +3,53 @@ import acceptLanguage from "accept-language";
 import { CustomMiddleware } from "@/lib/utils";
 import { fallbackLng, languages, cookieName } from "@/app/i18n/settings";
 export const withI18n = (middleware: CustomMiddleware) => {
-  return async (request: NextRequest, event: NextFetchEvent) => {
-    const response = NextResponse.next();
+  return async (req: NextRequest, event: NextFetchEvent) => {
+    const { pathname } = req.nextUrl;
     if (
-      request.nextUrl.pathname.indexOf("icon") > -1 ||
-      request.nextUrl.pathname.indexOf("chrome") > -1
+      [
+        "/manifest.json",
+        "/favicon.ico",
+        // Your other files in `public`
+      ].includes(pathname)
     )
-      return await middleware(request, event, response);
+      return;
+    if (
+      req.nextUrl.pathname.indexOf("icon") > -1 ||
+      req.nextUrl.pathname.indexOf("chrome") > -1
+    )
+      return await middleware(req, event, NextResponse.next());
     let lng: string | undefined | null;
-    if (request.cookies.has(cookieName))
-      lng = acceptLanguage.get(request.cookies.get(cookieName)?.value);
-    if (!lng) lng = acceptLanguage.get(request.headers.get("Accept-Language"));
+    if (req.cookies.has(cookieName))
+      lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
+    if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
     if (!lng) lng = fallbackLng;
-
     // Redirect if lng in path is not supported
     if (
-      !languages.some((loc) =>
-        request.nextUrl.pathname.startsWith(`/${loc}`)
-      ) &&
-      !request.nextUrl.pathname.startsWith("/_next")
+      !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
+      !req.nextUrl.pathname.startsWith("/_next")
     ) {
-      const response = NextResponse.redirect(
-        new URL(
-          `/${lng}${request.nextUrl.pathname}${request.nextUrl.search}`,
-          request.url
+      return await middleware(
+        req,
+        event,
+        NextResponse.redirect(
+          new URL(
+            `/${lng}${req.nextUrl.pathname}${req.nextUrl.search}`,
+            req.url
+          )
         )
       );
-      return await middleware(request, event, response);
     }
 
-    if (request.headers.has("referer")) {
-      const refererUrl = new URL(request.headers.get("referer") || "");
+    if (req.headers.has("referer")) {
+      const refererUrl = new URL(req.headers.get("referer") || "");
       const lngInReferer = languages.find((l) =>
         refererUrl.pathname.startsWith(`/${l}`)
       );
       const response = NextResponse.next();
       if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
-      return await middleware(request, event, response);
+      return await middleware(req, event, response);
     }
 
-    return await middleware(request, event, response);
+    return await middleware(req, event, NextResponse.next());
   };
 };

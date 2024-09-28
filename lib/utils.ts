@@ -26,7 +26,6 @@ export function chain(
     const next = chain(functions, index + 1)
     return current(next)
   }
-
   return (
     _request: NextRequest,
     _event: NextFetchEvent,
