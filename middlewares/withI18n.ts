@@ -1,9 +1,12 @@
-import { NextRequest, NextResponse, NextFetchEvent } from "next/server";
+import { NextResponse } from "next/server";
 import acceptLanguage from "accept-language";
 import { CustomMiddleware } from "@/lib/utils";
 import { fallbackLng, languages, cookieName } from "@/app/i18n/settings";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 export const withI18n = (middleware: CustomMiddleware) => {
-  return async (req: NextRequest, event: NextFetchEvent) => {
+  return clerkMiddleware(async (auth, req, event) => {
+    const { userId } = auth();
+
     const { pathname } = req.nextUrl;
     if (
       [
@@ -23,23 +26,18 @@ export const withI18n = (middleware: CustomMiddleware) => {
       lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
     if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
     if (!lng) lng = fallbackLng;
+
     // Redirect if lng in path is not supported
     if (
       !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
       !req.nextUrl.pathname.startsWith("/_next")
     ) {
-      return await middleware(
-        req,
-        event,
-        NextResponse.redirect(
-          new URL(
-            `/${lng}${req.nextUrl.pathname}${req.nextUrl.search}`,
-            req.url
-          )
-        )
+      const response = NextResponse.redirect(
+        new URL(`/${lng}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url)
       );
-    }
 
+      return await middleware(req, event, response);
+    }
     if (req.headers.has("referer")) {
       const refererUrl = new URL(req.headers.get("referer") || "");
       const lngInReferer = languages.find((l) =>
@@ -49,7 +47,19 @@ export const withI18n = (middleware: CustomMiddleware) => {
       if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
       return await middleware(req, event, response);
     }
+    const publicRoutes = createRouteMatcher([
+      `/${lng}/sign-in(.*)`,
+      `/${lng}/sign-up(.*)`,
+      `/${lng}`,
+    ]);
+    // 放行 publicRoutes
+    if (publicRoutes(req)) {
+      return await middleware(req, event, NextResponse.next());
+    }
 
-    return await middleware(req, event, NextResponse.next());
-  };
+    // 鉴权逻辑
+    if (!userId) {
+      return NextResponse.redirect(new URL(`/${lng}`, req.url));
+    }
+  });
 };

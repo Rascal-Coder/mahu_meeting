@@ -1,7 +1,7 @@
 import { chain } from "@/lib/utils";
-import { withAuth, withI18n } from "@/middlewares";
+import { withI18n } from "@/middlewares";
 
-export default chain([withAuth,withI18n]);
+export default chain([withI18n]);
 
 export const config = {
   matcher: [
@@ -11,4 +11,3 @@ export const config = {
     "/(api|trpc)(.*)",
   ],
 };
-
