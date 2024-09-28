@@ -10,9 +10,8 @@ import {
   IconPinnedOff,
 } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
-// import { useSidebarLinks } from '../../lib/hooks/useSidebarLinks';
 
-interface Links {
+export interface Links {
   label: string;
   href: string;
   icon: React.JSX.Element | React.ReactNode;
@@ -224,19 +223,5 @@ export const SidebarLink = ({
   );
 };
 
-// const Sidebar = () => {
-//   const { SIDEBAR_LINKS } = useSidebarLinks();
-
-//   return (
-//     <div>
-//       {SIDEBAR_LINKS.map((link) => (
-//         <a key={link.href} href={link.href}>
-//           {link.icon}
-//           {link.label}
-//         </a>
-//       ))}
-//     </div>
-//   );
-// };
 
 export default Sidebar;

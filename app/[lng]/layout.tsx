@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+// import { useRouter } from 'next/router';
 import localFont from "next/font/local";
 import "./globals.css";
-import { I18nProvider } from "@/providers/I18nProvider";
+import { dir } from "i18next";
+import { languages } from "../i18n/settings";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -55,17 +58,24 @@ export const metadata: Metadata = {
   },
 };
 
+export async function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
 function RootLayout({
   children,
+  params: { lng },
 }: Readonly<{
   children: React.ReactNode;
+  params: {
+    lng: string;
+  };
 }>) {
   return (
-    <html lang="en">
+    <html lang={lng} dir={dir(lng)}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <I18nProvider>{children}</I18nProvider>
+        {children}
       </body>
     </html>
   );

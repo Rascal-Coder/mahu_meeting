@@ -1,0 +1,10 @@
+{
+    "home": "Home",
+    "planned": "Planned",
+    "completed": "Completed",
+    "recorded": "Recorded",
+    "meetingRoom": "Meeting Room",
+    "standardTime": "Standard Time UTC+1",
+    "today": "{{date}}",
+    "currentTime": "{{time}}"
+}

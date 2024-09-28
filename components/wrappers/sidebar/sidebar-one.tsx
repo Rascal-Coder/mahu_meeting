@@ -6,15 +6,19 @@ import {
   SidebarLink,
   SidebarContextProps,
 } from "@/components/ui/sidebar";
-import { useSidebarLinks } from "@/lib/hooks/useSidebarLinks";
+
+import { Links } from "@/components/ui/sidebar";
+interface SidebarOneProps extends SidebarContextProps {
+  links: Links[];
+}
 export function SidebarOne({
   open,
   setOpen,
   pinned,
   setPinned,
-  animate
-}: Partial<SidebarContextProps>) {
-  const { SIDEBAR_LINKS } = useSidebarLinks();
+  animate,
+  links,
+}: Partial<SidebarOneProps>) {
   return (
     <>
       <Sidebar
@@ -27,9 +31,11 @@ export function SidebarOne({
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <div className="mt-8 flex flex-col gap-2">
-              {SIDEBAR_LINKS.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
-              ))}
+              {links && links?.length
+                ? links.map((link, idx) => (
+                    <SidebarLink key={idx} link={link} />
+                  ))
+                : null}
             </div>
           </div>
         </SidebarBody>

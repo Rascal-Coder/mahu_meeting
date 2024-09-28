@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
 import { Row } from "@/components/ui/row";
 import { UserButton } from "@clerk/nextjs";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/app/i18n/client";
 import { IconLanguage } from "@tabler/icons-react";
 import {
   DropdownMenu,
@@ -16,14 +16,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-function HeaderOne() {
-  const { i18n } = useTranslation();
+import { usePathname ,useRouter} from "next/navigation";
+function HeaderOne({ lng }: { lng: string }) {
+  const { i18n } = useTranslation(lng, "common");
   const [language, setLanguage] = useState(i18n.language);
 
+  const pathName = usePathname();
+  const router = useRouter();
+
+  const redirectedPathName = (lng: string) => {
+    if (!pathName) return "/";
+    const segments = pathName.split("/");
+    segments[1] = lng;
+    return segments.join("/");
+  };
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     setLanguage(lng);
+    const redirectUrl= redirectedPathName(lng);
+    router.push(redirectUrl);
   };
 
   return (
