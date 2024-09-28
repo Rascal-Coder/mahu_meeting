@@ -4,8 +4,10 @@ import { HomeCard } from "@/components/wrappers/home/home-card";
 import { MeetingActions } from "@/components/wrappers/meeting/meeting-actions";
 import { Grid } from "@radix-ui/themes";
 import { useTranslation } from "@/app/i18n/client";
-import { useEffect, useState } from "react";
-export default function HomePage({
+import { use, useEffect, useState } from "react";
+
+
+export default  function HomePage({
   params: { lng },
 }: {
   params: {
@@ -52,7 +54,7 @@ export default function HomePage({
         today={date}
         currentTime={time}
       />
-      <MeetingActions lng={lng}  t={t}/>
+      <MeetingActions lng={lng} t={t} />
     </Grid>
   );
 }
