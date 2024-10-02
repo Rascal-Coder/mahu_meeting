@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 // import { useRouter } from 'next/router';
 import localFont from "next/font/local";
-import "./globals.css";
+import "./styles/globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 

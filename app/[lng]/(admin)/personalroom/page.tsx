@@ -1,10 +1,20 @@
-import React from 'react';
+import { Heading } from "@/components/ui/heading";
+import { Personnal } from "@/components/wrappers/personnalinfo/personnal";
+import { Metadata } from "next";
 
-export default function PersonalRoomPage() {
+export default function Page() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">个人会议室</h1>
-      <p>这里是您的个人会议室。您可以在这里开始即时会议或管理您的会议设置。</p>
-    </div>
+    <>
+      <Heading title="我的会议个人房间" />
+      <Personnal />
+    </>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Mahu-meeting - 个人房间",
+  description: "视频通话应用",
+  icons: {
+    icon: "/logo/logo.png",
+  },
+};

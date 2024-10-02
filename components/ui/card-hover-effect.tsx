@@ -30,7 +30,7 @@ export const HoverEffect = ({
   items,
   className,
   lng,
-  t
+  t,
 }: {
   items: {
     title: string;
@@ -42,7 +42,7 @@ export const HoverEffect = ({
   }[];
   className?: string;
   lng: string;
-  t: any
+  t: any;
 }) => {
   registerLocale(lng === "zh" ? "zh-CN" : "en-US", lng === "zh" ? zhCN : enUS);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -61,7 +61,11 @@ export const HoverEffect = ({
   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetail?.id}`;
 
   const createMeeting = async () => {
-    if (!client || !user) return;
+    if (!client || !user) {
+      toast.error(" Stream-io Client not found");
+      setMeetingState(undefined)
+      return;
+    }
     try {
       if (!values.dateTime) {
         toast(t("selectDateTime"));

@@ -1,10 +1,20 @@
-import React from 'react';
+import { Heading } from "@/components/ui/heading";
+import { Meeting } from "@/components/wrappers/meeting/meeting";
+import { Metadata } from "next";
 
-export default function MeetingRecordingsPage() {
+export default function Page() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">会议录像</h1>
-      <p>这里将显示会议录像列表。</p>
-    </div>
+    <>
+      <Heading title="录制的会议" />  
+      <Meeting show={6} type="recordings" />
+    </>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Mahu-meeting - 录制的会议",  
+  description: "视频通话应用", 
+  icons: {
+    icon: "/logo/logo.svg",
+  },
+};

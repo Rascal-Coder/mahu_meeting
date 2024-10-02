@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-// import acceptLanguage from "accept-language";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { CustomMiddleware } from "@/lib/utils";
@@ -14,6 +13,7 @@ export const withI18n = (middleware: CustomMiddleware) => {
       [
         "/manifest.json",
         "/favicon.ico",
+        "/public/(.*)"
         // Your other files in `public`
       ].includes(pathname)
     )
