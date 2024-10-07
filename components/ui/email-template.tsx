@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
 import { useUser } from '@clerk/nextjs'
+import React from 'react'
 
 // TODO: 添加自定义邮箱模版
 export const EmailTemplate = ({ firstName }: { firstName: string }) => {

@@ -4,7 +4,7 @@ import { HomeCard } from "@/components/wrappers/home/home-card";
 import { MeetingActions } from "@/components/wrappers/meeting/meeting-actions";
 import { Grid } from "@radix-ui/themes";
 import { useTranslation } from "@/app/i18n/client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default  function HomePage({
